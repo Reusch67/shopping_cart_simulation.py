@@ -1,0 +1,85 @@
+"""
+Shopping cart simulation
+this program will simulate an online purchase, asking the user to select options to add, remove, list the items and compute the total of the purchase
+"""
+#added subtotal in option 2, cart empty verification in opts 2, 3, 4, subtotal to calculate taxes, #discount and finally the total amount of the purchase. And error message "invalid selection"
+
+
+def enter_choice(question, choices):
+    answer = input(question)
+    return answer
+
+shopping_cart_items = []
+shopping_cart_items_price = []
+
+
+
+while True:
+    answer = enter_choice('What do you need to do? \n1.  Add new item, \n2.  Display contents of the shopping cart, \n3.  Remove item, \n4.  Compute total, \n5.  Quit \n ',['1','2', '3', '4', '5'])
+    if answer == '1':
+        new_item = input('What item would you like to add? ')
+        shopping_cart_items.append(new_item)
+        new_item_price = float(input(f'What is the price of {new_item}? '))
+        shopping_cart_items_price.append(new_item_price)
+        
+        print(f'{new_item} added to the shopping cart.')
+
+
+    elif answer == '2':
+        if not shopping_cart_items:
+            print('The shopping cart is empty.')
+
+        else:
+            print('Contents of the shopping cart: ')
+            for i, item in enumerate(shopping_cart_items, start = 1):
+                print(f'{i}.{shopping_cart_items[i-1]} - ${shopping_cart_items_price[i-1]}')
+        subtotal = sum(shopping_cart_items_price)
+        print(f'The subtotal amount of your purchase is: {subtotal}')
+                                  
+                               
+    elif answer == '3':
+        print('Remove item')
+        #The code here will remove an item from the items list and its price
+        #from the items price list
+        if not shopping_cart_items:
+            print('The shopping cart is empty.')
+        else:
+            item_to_remove = input('Which item would you like to remove? ')
+            if item_to_remove in shopping_cart_items:
+                index = shopping_cart_items.index(item_to_remove)
+                shopping_cart_items.pop(index)
+                shopping_cart_items_price.pop(index)
+                print(f'{item_to_remove} removed from the shopping cart.')
+            else:
+                print(f'{item_to_remove} is not in the shopping cart.')
+
+    elif answer == '4':
+        print('Compute total')
+        #The code here will sum all the items prices
+        if not shopping_cart_items:
+            print('The shopping cart is empty.')
+        else:
+            tax_rate = float(input('Enter the tax rate (%): '))
+            subtotal = sum(shopping_cart_items_price)
+            
+            # Apply discount if subtotal exceeds a certain amount
+            discount_threshold = 100.0  # Set the threshold amount for the discount
+            discount_percentage = 10    # Set the discount percentage
+            if subtotal > discount_threshold:
+                discount = subtotal * (discount_percentage / 100)
+            else:
+                discount = 0.0
+            
+            tax = subtotal * (tax_rate / 100)
+            total = subtotal + tax - discount
+            print(f'Subtotal: ${subtotal:.2f}')
+            print(f'Tax: ${tax:.2f}')
+            print(f'Discount: ${discount:.2f}')
+            print(f'Total: ${total:.2f}')
+
+
+    elif answer == '5':
+        print('Thank you for your purchase!')
+        break
+    else:
+        print('Invalid option selected. Please choose a valid option. ')
